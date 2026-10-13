@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEREBROOM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --surface:#ffffff; --surface2:#eeeeee;
+  --line:rgba(20,20,20,.12);
+  --text:#141414; --text-dim:#5b6672;
+  --silver:#6b6b6b; --accent:#141414; --accent-soft:rgba(20,20,20,.06);
+  --tile:#8a8a8a;
+  --danger:#b8654f;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+:root:not([data-theme="light"]){ }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ } }
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px); height:100%;}
+body{
+  margin:0; height:100%; background:var(--bg); color:var(--text);
+  font-family:'Inter',sans-serif; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.serif{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.01em;}
+::-webkit-scrollbar{display:none}
+
+/* ---------- Frame ---------- */
+.app{max-width:480px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;position:relative;background:var(--bg);}
+
+/* ---------- Header ---------- */
+header{
+  padding:calc(18px + env(safe-area-inset-top,0px)) 20px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:20;
+}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo img{width:38px;height:38px;border-radius:50%;display:block;}
+.logo span{font-size:16px;letter-spacing:.02em;font-weight:800;font-family:'Manrope',sans-serif;}
+.icon-btn{background:none;border:none;color:var(--text);position:relative;padding:6px;cursor:pointer;}
+.icon-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.4;}
+.badge{position:absolute;top:0;right:0;background:var(--accent);color:var(--bg);font-size:10px;font-weight:600;border-radius:20px;min-width:15px;height:15px;display:flex;align-items:center;justify-content:center;padding:0 3px;}
+
+/* ---------- Hero ---------- */
+.hero{padding:26px 20px 8px;}
+.hero .eyebrow{color:var(--text-dim);font-size:12.5px;margin-bottom:10px;font-weight:600;}
+.hero .rule{width:40px;height:2px;background:var(--text);margin:10px 0 14px;}
+.hero h1{font-size:30px;line-height:1.18;margin:0 0 4px;font-weight:800;}
+.hero p{color:var(--text-dim);font-size:14px;line-height:1.6;margin:0 0 16px;max-width:36ch;}
+.hero .tail-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:100px;padding:6px 14px 6px 8px;font-size:12.5px;color:var(--text-dim);}
+.hero .tail-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--accent);}
+
+/* ---------- Category tiles (catalog home) ---------- */
+.cat-head{display:flex;align-items:baseline;justify-content:space-between;padding:20px 20px 12px;}
+.cat-head h2{font-size:20px;margin:0;font-weight:800;}
+.cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 8px;}
+.cat-tile{position:relative;aspect-ratio:1.35/1;border-radius:14px;overflow:hidden;cursor:pointer;
+  background:var(--tile);display:flex;align-items:flex-end;padding:12px;color:#fff;transition:transform .15s;}
+.cat-tile:active{transform:scale(.96);}
+.cat-tile .wm{position:absolute;top:-8%;right:-8%;width:75%;height:75%;opacity:.28;pointer-events:none;}
+.cat-tile .wm svg{width:100%;height:100%;stroke:#fff;fill:none;stroke-width:1;}
+.cat-tile .label{position:relative;z-index:2;font-weight:700;font-size:13.5px;line-height:1.28;}
+.cat-tile .chev{position:absolute;top:10px;right:10px;width:18px;height:18px;color:#fff;z-index:2;opacity:.9;}
+.back-row{display:flex;align-items:center;gap:6px;padding:16px 20px 0;color:var(--text-dim);font-size:13px;cursor:pointer;}
+.back-row svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;}
+
+/* ---------- Grid ---------- */
+.section-label{display:flex;align-items:baseline;justify-content:space-between;padding:14px 20px 10px;}
+.section-label h2{font-size:20px;margin:0;font-weight:800;}
+.section-label span{font-size:12px;color:var(--text-dim);}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 10px;}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:2px;overflow:hidden;cursor:pointer;transition:transform .15s;}
+.card:active{transform:scale(.97);}
+.card .thumb{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;background:var(--surface2);}
+.card .thumb svg{width:52%;height:52%;stroke:var(--silver);fill:none;stroke-width:1.1;opacity:.92;}
+.card .info{padding:11px 12px 13px;}
+.card .name{font-size:13.5px;line-height:1.3;margin:0 0 4px;}
+.card .meta{display:flex;align-items:center;justify-content:space-between;}
+.card .price{font-size:14px;color:var(--text);font-weight:700;}
+.fav-btn{background:none;border:none;color:var(--text-dim);cursor:pointer;padding:2px;}
+.fav-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.4;}
+.fav-btn.on svg{fill:var(--accent);stroke:var(--accent);}
+
+/* ---------- Bottom nav ---------- */
+nav.bottom{
+  position:sticky;bottom:0;display:flex;border-top:1px solid var(--line);background:var(--bg);
+  padding:8px 6px calc(8px + env(safe-area-inset-bottom,0px));z-index:30;
+}
+nav.bottom button{flex:1;background:none;border:none;color:var(--text-dim);display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;padding:4px;cursor:pointer;}
+nav.bottom button svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.4;}
+nav.bottom button.active{color:var(--text);}
+nav.bottom button.active svg{stroke:var(--accent);}
+
+/* ---------- Sheet (product / cart / contact) ---------- */
+.overlay{position:fixed;inset:0;background:rgba(24,23,20,.4);opacity:0;pointer-events:none;transition:opacity .2s;z-index:40;}
+.overlay.show{opacity:1;pointer-events:auto;}
+.sheet{
+  position:fixed;left:50%;bottom:0;transform:translate(-50%,100%);width:100%;max-width:480px;
+  background:var(--bg);border-top:1px solid var(--line);border-radius:14px 14px 0 0;
+  max-height:88vh;overflow-y:auto;transition:transform .28s cubic-bezier(.22,.9,.3,1);z-index:41;
+  padding-bottom:calc(20px + env(safe-area-inset-bottom,0px));
+}
+.sheet.show{transform:translate(-50%,0);}
+.sheet-handle{width:36px;height:4px;background:var(--line);border-radius:4px;margin:10px auto 4px;}
+.sheet-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--text-dim);cursor:pointer;}
+.sheet-close svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.4;}
+
+.pd-hero{aspect-ratio:1/1;max-height:280px;margin:6px 20px 0;background:radial-gradient(120% 90% at 30% 20%, rgba(63,97,105,.08), transparent 60%), var(--surface2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+.pd-hero svg{width:44%;height:44%;stroke:var(--silver);fill:none;stroke-width:1;}
+.pd-body{padding:18px 20px 4px;}
+.pd-body h3{font-size:24px;margin:0 0 6px;font-weight:500;}
+.pd-price{font-size:18px;color:var(--accent);margin:0 0 14px;}
+.pd-desc{font-size:13.5px;color:var(--text-dim);line-height:1.6;margin:0 0 16px;}
+.pd-specs{display:flex;flex-direction:column;gap:8px;font-size:12.5px;color:var(--text-dim);border-top:1px solid var(--line);padding:14px 0;margin-bottom:16px;}
+.pd-specs div{display:flex;justify-content:space-between;}
+.pd-specs b{color:var(--text);font-weight:500;}
+
+.btn{width:100%;padding:14px;border-radius:2px;border:1px solid transparent;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:var(--accent);color:var(--bg);}
+.btn-primary:active{opacity:.85;}
+.btn-ghost{background:none;border:1px solid var(--line);color:var(--text);}
+.pd-actions{display:flex;gap:10px;padding:0 20px 6px;}
+.pd-actions .btn{margin:0;}
+
+.cart-row{display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);align-items:center;}
+.cart-row .thumb{width:56px;height:56px;flex:0 0 auto;background:var(--surface2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;}
+.cart-row .thumb svg{width:60%;height:60%;stroke:var(--silver);fill:none;stroke-width:1.2;}
+.cart-row .cinfo{flex:1;min-width:0;}
+.cart-row .cinfo .name{font-size:13.5px;margin:0 0 4px;}
+.cart-row .cinfo .price{font-size:13px;color:var(--accent);}
+.cart-row .remove{background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:12px;padding:4px;}
+.cart-empty{padding:60px 20px;text-align:center;color:var(--text-dim);font-size:13.5px;}
+.cart-summary{padding:16px 20px 0;}
+.cart-summary .row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--text-dim);margin-bottom:6px;}
+.cart-summary .total{display:flex;justify-content:space-between;font-size:18px;color:var(--text);margin:10px 0 16px;font-family:'Manrope',sans-serif;font-weight:800;}
+
+.contact-list{padding:6px 20px 4px;display:flex;flex-direction:column;gap:10px;}
+.contact-item{display:flex;align-items:center;gap:12px;border:1px solid var(--line);padding:13px 14px;border-radius:2px;text-decoration:none;color:var(--text);}
+.contact-item svg{width:20px;height:20px;stroke:var(--accent);fill:none;stroke-width:1.4;flex:0 0 auto;}
+.contact-item .t{font-size:13.5px;}
+.contact-item .s{font-size:11.5px;color:var(--text-dim);}
+
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--line);color:var(--text);padding:10px 18px;border-radius:100px;font-size:13px;opacity:0;transition:.25s;z-index:60;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.about-body{padding:6px 20px 4px;font-size:13.5px;color:var(--text-dim);line-height:1.7;}
+.about-body h3{color:var(--text);font-size:19px;margin:16px 0 6px;font-weight:500;}
+.about-body .addr{color:var(--text);margin-top:4px;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="logo"><img src="data:image/jpeg;base64,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REBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERTQREVBERAREQf/Z" alt="SEREBROOM"><span>SEREBROOM</span></div>
+    <button class="icon-btn" onclick="openCart()">
+      <svg viewBox="0 0 24 24"><path d="M6 7h15l-1.5 9h-12z"/><path d="M6 7 4.7 3H2"/><circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg>
+      <span class="badge" id="cartBadge" style="display:none">0</span>
+    </button>
+  </header>
+
+  <div class="hero">
+    <div class="eyebrow">SEREBROOM</div>
+    <div class="rule"></div>
+    <h1>Ювелирное ателье</h1>
+    <p>Молодой локальный бренд из Чебоксар. Серебро высшей пробы, натуральные камни, ручная работа — никакой серийности и маркетплейсов.</p>
+    <div class="tail-badge"><span class="dot"></span>Хвост кита — подпись бренда</div>
+  </div>
+
+  <div class="back-row" id="backRow" style="display:none" onclick="showCategories()">
+    <svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg>Все категории
+  </div>
+
+  <div id="catalogHome">
+    <div class="cat-head"><h2>Каталог ювелирных украшений</h2></div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+
+  <div id="catalogList" style="display:none">
+    <div class="section-label"><h2 id="gridTitle">Каталог</h2><span id="gridCount"></span></div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <div style="height:14px"></div>
+
+  <nav class="bottom">
+    <button class="active" data-tab="catalog" onclick="setTab('catalog')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
+      Каталог
+    </button>
+    <button data-tab="fav" onclick="setTab('fav')">
+      <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-8.8C.6 7.4 2.6 4 6.2 4c2 0 3.6 1.1 4.4 2.6C11.4 5.1 13 4 15 4c3.6 0 5.6 3.4 3.7 7.2C19 15.6 12 20 12 20z"/></svg>
+      Избранное
+    </button>
+    <button data-tab="order" onclick="openIndividual()">
+      <svg viewBox="0 0 24 24"><path d="M12 3v18M4 8h16M4 16h16"/></svg>
+      Свой заказ
+    </button>
+    <button data-tab="about" onclick="openAbout()">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+      О нас
+    </button>
+  </nav>
+</div>
+
+<!-- Overlay + Sheets -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+
+<div class="sheet" id="sheetProduct">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" onclick="closeAll()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div class="pd-hero" id="pdHero"></div>
+  <div class="pd-body">
+    <h3 id="pdName"></h3>
+    <div class="pd-price" id="pdPrice"></div>
+    <p class="pd-desc" id="pdDesc"></p>
+    <div class="pd-specs">
+      <div><span>Материал</span><b>Серебро 925, родий</b></div>
+      <div><span>Изготовление</span><b>Ручная работа, Чебоксары</b></div>
+      <div id="pdStoneRow" style="display:none"><span>Камень</span><b id="pdStone"></b></div>
+      <div><span>Срок под заказ</span><b>30–45 рабочих дней</b></div>
+    </div>
+  </div>
+  <div class="pd-actions">
+    <button class="btn btn-ghost" id="pdFav" onclick="toggleFavCurrent()">В избранное</button>
+    <button class="btn btn-primary" onclick="addToCartCurrent()">В корзину</button>
+  </div>
+  <div style="height:6px"></div>
+</div>
+
+<div class="sheet" id="sheetCart">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" onclick="closeAll()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div style="padding:18px 20px 4px;"><h3 class="serif" style="font-size:22px;font-weight:500;margin:0;">Корзина</h3></div>
+  <div id="cartList"></div>
+  <div id="cartSummary"></div>
+</div>
+
+<div class="sheet" id="sheetContact">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" onclick="closeAll()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div style="padding:18px 20px 6px;"><h3 class="serif" style="font-size:22px;font-weight:500;margin:0 0 4px;">Оформить заказ</h3><p style="font-size:12.5px;color:var(--text-dim);margin:0;">Выберите способ связи — менеджер подтвердит наличие и детали.</p></div>
+  <div class="contact-list">
+    <a class="contact-item" id="waLink" href="#" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M3 21l1.6-4.8A8 8 0 1 1 9.2 20L3 21z"/></svg>
+      <div><div class="t">Telegram</div><div class="s">@serebroomru — быстрый ответ</div></div>
+    </a>
+    <a class="contact-item" href="tel:+79373791919">
+      <svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>
+      <div><div class="t">+7 (937) 379-19-19</div><div class="s">Звонок в мастерскую</div></div>
+    </a>
+    <a class="contact-item" href="https://www.instagram.com/serebroom.ru/" target="_blank">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+      <div><div class="t">Instagram</div><div class="s">@serebroom.ru</div></div>
+    </a>
+  </div>
+  <div style="height:8px"></div>
+</div>
+
+<div class="sheet" id="sheetAbout">
+  <div class="sheet-handle"></div>
+  <button class="sheet-close" onclick="closeAll()"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  <div style="padding:18px 20px 4px;"><h3 class="serif" style="font-size:22px;font-weight:500;margin:0;">О SEREBROOM</h3></div>
+  <div class="about-body">
+    <p>Молодой локальный бренд из Чебоксар. Мы отказались от серийного производства — каждое украшение делает мастер вручную, в небольшой мастерской.</p>
+    <p>Все изделия покрываются родием: это дольше сохраняет блеск и защищает от потемнения.</p>
+    <p>Коллекции выходят малыми партиями и почти никогда не повторяются — на маркетплейсах нас нет и не будет.</p>
+    <h3>Индивидуальный заказ</h3>
+    <p>Подберём камни, размер и форму или создадим украшение по вашему эскизу. Срок исполнения — от 30 до 45 рабочих дней.</p>
+    <h3>Контакты</h3>
+    <p class="addr">г. Чебоксары, ул. Ярославская 29<br>+7 (937) 379-19-19 · hello@serebroom.ru</p>
+  </div>
+  <div style="padding:12px 20px 6px;"><button class="btn btn-primary" onclick="closeAll();openContact()">Написать нам</button></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- Data ---------- */
+const ICONS = {
+  ring:'<path d="M12 22a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="M9 10 8 4h8l-1 6"/>',
+  ringstone:'<path d="M12 22a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/><path d="M9 10 8 4h8l-1 6"/><circle cx="12" cy="16" r="1.5"/>',
+  whale:'<path d="M4 15c3-6 8-9 14-8-1 2-1 3 1 4-2 1-3 2-3 4-4 2-9 2-12-2z"/><path d="M4 15c-1 1-2 1-3 0"/>',
+  earring:'<circle cx="12" cy="7" r="3"/><path d="M12 10v6a3 3 0 1 0 3 3"/>',
+  earringdiy:'<circle cx="12" cy="6.5" r="2.4"/><rect x="9.5" y="10" width="5" height="4" rx="1"/><path d="M12 14v4a3 3 0 1 0 3-3"/>',
+  necklace:'<path d="M4 4c0 8 6 13 8 13s8-5 8-13"/><circle cx="12" cy="17" r="2.3"/>',
+  pendant:'<path d="M12 3v5"/><circle cx="12" cy="14" r="6"/>',
+  pearl:'<circle cx="8" cy="14" r="3"/><circle cx="14" cy="10" r="3.6"/><circle cx="18" cy="16" r="2.2"/>',
+  chuvashia:'<path d="M4 12l4-5 4 5-4 5z"/><path d="M12 12l4-5 4 5-4 5z"/>'
+};
+const CATS = [
+  {id:'new', name:'Новинки'},
+  {id:'chuvashia', name:'Моя Чувашия'},
+  {id:'whale', name:'Хвост кита'},
+  {id:'ringstone', name:'Кольца с камнями'},
+  {id:'ring', name:'Кольца'},
+  {id:'necklace', name:'Колье и чокеры'},
+  {id:'earring', name:'Серьги'},
+  {id:'earringdiy', name:'Серьги-конструкторы'},
+  {id:'pendant', name:'Кулоны'},
+  {id:'pearl', name:'Жемчуг'}
+];
+const PRODUCTS = [
+{id:1,cat:'ring',icon:'ring',name:'Серебряное кольцо Plisse на фалангу',price:2490,desc:'Фактурное колечко на верхнюю фалангу пальцев',stone:'Мистик кварц',new:false},
+{id:2,cat:'ring',icon:'ring',name:'Серебряное кольцо "Дай Обниму" (основное)',price:3490,desc:'Научно доказано, что объятия снижают уровень стресса . Серебряные объятия ещё и очень красивые! Мы создали для вас это кольцо,…',stone:'',new:true},
+{id:3,cat:'ring',icon:'ring',name:'Серебряное узкое кольцо "Винная Зебра" с красной эмалью',price:4590,desc:'Размер регулируется 16,5-18',stone:'Ювелирная эмаль',new:true},
+{id:4,cat:'ring',icon:'ring',name:'Серебряное фактурное кольцо "Эспрессо"',price:4890,desc:'Изящное кольцо на матовой шинке в фактуре "магма" с кофейным зерном, идеально повторяющим настоящую природную форму обжаренных…',stone:'',new:true},
+{id:5,cat:'ring',icon:'ring',name:'Серебряное кольцо Folga с кистью из серебряных цепочек',price:5490,desc:'Ширина кольца: 6мм Размер регулируется 16,5-17,5',stone:'',new:false},
+{id:6,cat:'ring',icon:'ring',name:'Серебряное дутое глянцевое кольцо Лунница',price:6490,desc:'Серебряное дутое глянцевое кольцо со сквозной гравировкой "Лунница"',stone:'',new:false},
+{id:7,cat:'ring',icon:'ring',name:'Серебряное фактурное широкое (11-12 мм) кольцо FOLGA',price:7190,desc:'Серебряное фактурное широкое (11-12 мм) кольцо FOLGA',stone:'',new:false},
+{id:8,cat:'earring',icon:'earring',name:'Серебряные серьги-скрепки с Жемчугом',price:3290,desc:'Серьги-трансформеры Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный…',stone:'Речной жемчуг',new:true},
+{id:9,cat:'earring',icon:'earring',name:'Серебряные серьги-пусеты "Мурашки"',price:4190,desc:'Диаметр 10мм Винтовой замок',stone:'',new:true},
+{id:10,cat:'earring',icon:'earring',name:'Серебряные серьги-скрепки с Чёрным Агатом',price:4590,desc:'Увеличенные серьги-трансформеры Черный агат - один из самых загадочных и уникальных минералов на Земле. Его черный цвет…',stone:'Агат чёрный натуральный',new:true},
+{id:11,cat:'earring',icon:'earring',name:'Серебряные серьги-пусеты VOLGA',price:4890,desc:'Серебро 925 с родиевым покрытием, ручная работа мастерской.',stone:'',new:true},
+{id:12,cat:'earring',icon:'earring',name:'Серебряные серьги-скрепки с гранённым Чёрным Агатом круглой формы',price:5190,desc:'Увеличенная модель скрепок',stone:'Агат чёрный натуральный',new:true},
+{id:13,cat:'earring',icon:'earring',name:'Серебряные фактурные серьги-пусеты Фольга окружности',price:5490,desc:'Крупные серьги-пусеты на винтовом замке.',stone:'',new:true},
+{id:14,cat:'earring',icon:'earring',name:'Серебряные пусеты со "свисс" топазами',price:6190,desc:'Cpeди гoлyбых тoпaзoв, тoпaз "cвиcc" пpизнaн самым ярким и красивым. Пo cинeвe и глyбинe окраски этo зoлoтaя cepeдинa мeждy…',stone:'Свисс топаз (огранка)',new:true},
+{id:15,cat:'whale',icon:'whale',name:'Серебряное кольцо-Китёнок с каплей Хризолита (полосатый хвостик)',price:3290,desc:'Хризолит — ровесник египетских пирамид и зиккуратов Шумера. Этот камень был артефактом у одного из самых известных римских…',stone:'Хризолит капля',new:false},
+{id:16,cat:'whale',icon:'whale',name:'Серебряное кольцо Китёнок Нeliotis гладкий хвостик',price:4890,desc:'Рисунок камня уникальный на каждом украшении и не повторяется Размер регулируется 16-18,5 Другое название: ХАЛИОТИС. Что такое…',stone:'Гелиотис натуральный',new:true},
+{id:17,cat:'whale',icon:'whale',name:'Серебряные Фактурные серьги пусеты полосатые киты',price:5190,desc:'Серебряные серьги-пуссеты киты с фактурой полоска на винтовом замке',stone:'',new:false},
+{id:18,cat:'whale',icon:'whale',name:'Серебряное кольцо Кит с Голубым Халцедоном в форме капли (полосатый хвостик)',price:5190,desc:'Халцедон — многоликий кварцевый минерал. Известно, что Байрон и Наполеон носили перстень с халцедоном, а у Пушкина таких…',stone:'Голубой халцедон капля',new:true},
+{id:19,cat:'whale',icon:'whale',name:'Серебряное фактурное кольцо-Кит с Сапфирином (хвостик в крапинку)',price:5490,desc:'Сапфирин – нежный полудрагоценный камень, который имеет разнообразные оттенки. Камень может быть: серовато-голубой,…',stone:'Сапфирин натуральный',new:true},
+{id:20,cat:'whale',icon:'whale',name:'Серебряное фактурное кольцо-Кит с Горным Хрусталем хвостик в крапинку',price:5890,desc:'орный хрусталь – это самая чистая и прозрачная разновидность кварца. Относится к полудрагоценным камням. В качестве талисмана…',stone:'Горный Хрусталь (кабошон)',new:true},
+{id:21,cat:'whale',icon:'whale',name:'Серебряное кольцо Кит с каплей Доминиканского Ларимара (хвостик в крапинку)',price:6190,desc:'Доминиканский Ларимар («камень Атлантиды») — мощный позитивный талисман, олицетворяющий энергию моря и неба. Он считается…',stone:'Доминиканский Ларимар',new:true},
+{id:22,cat:'necklace',icon:'necklace',name:'Серебряное колье-чокер из крупной чёрной шпинели',price:2390,desc:'Серебряное колье-чокер из крупной чёрной шпинели 3мм длина 35+5 см',stone:'Шпинель натуральная черная',new:false},
+{id:23,cat:'necklace',icon:'necklace',name:'Серебряный чокер из рисового речного пресноводного жемчуга Rice Pearl',price:4390,desc:'Длина регулируется 35+5 см Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски.…',stone:'Жемчуг натуральный пресноводгный речной',new:true},
+{id:24,cat:'necklace',icon:'necklace',name:'Серебряное колье-чокер из мелкого барочного жемчуга',price:4590,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг нат',new:true},
+{id:25,cat:'necklace',icon:'necklace',name:'Серебряный чокер из чёрного жемчуга barocco',price:4890,desc:'Длина регулируется 35+5 см',stone:'Жемчуг речной пресноводный',new:true},
+{id:26,cat:'necklace',icon:'necklace',name:'Серебряный чокер Окружность в фактуре "ковка" 20мм',price:4990,desc:'Размер регулируется 38+5см',stone:'',new:true},
+{id:27,cat:'necklace',icon:'necklace',name:'Серебряное колье-чокер из натурального Лунного камня "Дождик"',price:5890,desc:'Длина изделия: 35+5 см На самом деле лунный камень - это собирательное название целого семейства минералов под названием…',stone:'Лунный камень натуральный граненый',new:true},
+{id:28,cat:'necklace',icon:'necklace',name:'Серебряное колье-чокер из рисового жемчуга с фактурным сердцем "Жемчужная Любовь"',price:6490,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг натуральный пресноводгный речной',new:true},
+{id:29,cat:'earringdiy',icon:'earringdiy',name:'Подвесы на сережки из Картографической Яшмы серого оттенка "Бублики"',price:1390,desc:'Определить, какой из цветов или рисунков наиболее характерен для яшмы, невозможно. Она бывает ч ерной, красной, фиолетовой,…',stone:'Яшма Серая',new:true},
+{id:30,cat:'earringdiy',icon:'earringdiy',name:'Серебряные подвесы из жемчуга Бива',price:2490,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Речной жемчуг Бива',new:true},
+{id:31,cat:'earringdiy',icon:'earringdiy',name:'Серебряные подвесы из Раухтопаза (граненные капли)',price:2990,desc:'Эти необычные подвесы в виде граненных капель ты можешь носить на серьги-основы или на цепочке, как кулон. Длина подвесов:…',stone:'Раухтопаз',new:true},
+{id:32,cat:'earringdiy',icon:'earringdiy',name:'Серебряный кафф Folga',price:3490,desc:'Кафф (серьга на хрящ без прокола) выполненный в фактуре Folga - регулируется по толщине уха',stone:'',new:false},
+{id:33,cat:'earringdiy',icon:'earringdiy',name:'Серебряные подвески на сережки "Солнышко" (лимонная позолота)',price:4490,desc:'Создавай новые образы каждый день с сережками-конструкторами! Эти солнышки можно носить на любые крупные серьги-основы…',stone:'',new:true},
+{id:34,cat:'earringdiy',icon:'earringdiy',name:'Серебряные двойные подвесы на сережку из белого барочного речного жемчуга',price:4890,desc:'Эти серебряные подвесы с натуральным речным барочным жемчугом - настоящая находка, если вам нужно украшение 3в1 Их можно…',stone:'Жемчуг речной натуральный белый',new:false},
+{id:35,cat:'earringdiy',icon:'earringdiy',name:'Серебряные подвесы на серьги "Бублики"',price:4890,desc:'Серьги-основы подбираются отдельно',stone:'',new:true},
+{id:36,cat:'pendant',icon:'pendant',name:'Серебряный фактурный кулон "Морская Звезда" (мин)',price:2190,desc:'Морская звезда имеет двойственную символику , одновременно связанную с водой и небом. Украшения в виде Морской звезды- не…',stone:'',new:true},
+{id:37,cat:'pendant',icon:'pendant',name:'Серебряный кулон Кофейное зерно с лимонной позолотой',price:2490,desc:'Кулон выполнен из серебра 925 пробы и покрыт европейской лимонной позолотой Ушко-петелька кулона позволяет носить его как на…',stone:'',new:false},
+{id:38,cat:'pendant',icon:'pendant',name:'Серебряный фактурный кулон "Морская Звезда"',price:2690,desc:'Морская звезда имеет двойственную символику , одновременно связанную с водой и небом. Украшения в виде Морской звезды- не…',stone:'',new:true},
+{id:39,cat:'pendant',icon:'pendant',name:'Серебряный фактурный кулон "Льдинка" в фактуре Фольга',price:3190,desc:'На фото кулон представлен на чокере из Терагерца.',stone:'',new:true},
+{id:40,cat:'pendant',icon:'pendant',name:'Серебряная подвеска Солнце с позолотой',price:3490,desc:'"Парящий" эффект: у подвески специально разоаботано скрытое двойное ушко, что бы визуально украшение смотрелос более изящно…',stone:'',new:false},
+{id:41,cat:'pendant',icon:'pendant',name:'Серебряный кулон "Мир"',price:3490,desc:'Мир принадлежит тебе. Этот серебряный медальон - напоминание о том, что мы так часто забываем в суете дней. Цена указана без…',stone:'',new:true},
+{id:42,cat:'pendant',icon:'pendant',name:'Серебряный кулон "Путеводная Звезда" с голубым Топазом',price:3490,desc:'Восьми лучевая звезда — воплощенное сияние, она заключает в себе солнечный круг, крест солнцестояния, равноденствий и стороны…',stone:'SKY топаз (огранка)',new:true},
+{id:43,cat:'ringstone',icon:'ringstone',name:'Серебряное узкое фактурное кольцо с натуральным Цитрином',price:3490,desc:'Цитрин называют солнечным камнем — как солнце дает энергию всему живому, цитрин дает ее своему владельцу. Минерал оказывает…',stone:'Цитрин (огранка)',new:true},
+{id:44,cat:'ringstone',icon:'ringstone',name:'Серебряное кольцо "Луна" с Мистик Кварцем (жёлтый)',price:5190,desc:'Мистик кварц отличается уникальным оттенком и разноцветными переливами. Именно за счёт этого свет, проходящий сквозь мистик…',stone:'Мистик Кварц (огранка)',new:false},
+{id:45,cat:'ringstone',icon:'ringstone',name:'Серебряное фактурное кольцо с подвеской из топаза "свисс" в форме ромба',price:5490,desc:'Размеры в наличии: 15,5-16 16-17 Cpeди гoлyбых тoпaзoв, тoпaз "cвиcc" пpизнaн самым ярким и красивым. Пo cинeвe и глyбинe…',stone:'Свисс топаз (огранка)',new:true},
+{id:46,cat:'ringstone',icon:'ringstone',name:'Серебряное фактурное кольцо Фольга с Лондон Топазом',price:6490,desc:'Полное название этого ювелирного камня Топаз London Blue. Он назван так в честь цвета неба Лондона , где был впервые получен.…',stone:'Лондон Топаз',new:false},
+{id:47,cat:'ringstone',icon:'ringstone',name:'Серебряное кольцо "Два камня" с Раухтопазом и Розовым Кварцем',price:6490,desc:'Натуральный камень Раухтопаз является разновидностью кварца . Его в свое время отнесли к топазам благодаря красивому блеску, и…',stone:'Раузтопаз;Розовый Кварц',new:false},
+{id:48,cat:'ringstone',icon:'ringstone',name:'Серебряное кольцо "Два Камня" с Чёрным Агатом и Мистик Кварцем',price:6890,desc:'Акцентное кольцо с двумя камнями: багет Чёрного Агата и капля Мистик Кварца классического оттенка "мультицвет" Свойства…',stone:'Агат Чёрный (огранка);Мистик Кварц (огранка)',new:true},
+{id:49,cat:'ringstone',icon:'ringstone',name:'Серебряное кольцо "Эллипс" с большим мистик кварцем',price:7190,desc:'Мистик кварц отличается уникальным оттенком и разноцветными переливами. Именно за счёт этого свет, проходящий сквозь мистик…',stone:'Мистик кварц',new:false},
+{id:50,cat:'pearl',icon:'pearl',name:'Серебряный чокер из натурального мелкого речного жемчуга "mini Base"',price:4390,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг натуральный пресноводгный речной',new:true},
+{id:51,cat:'pearl',icon:'pearl',name:'Серебряное колье-чокер из чёрно-синего мелкого барочного жемчуга',price:4390,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг речной нат',new:true},
+{id:52,cat:'pearl',icon:'pearl',name:'Серебряное колье из рисового барочного жемчуга (мини)',price:4590,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг нат речной ррис',new:true},
+{id:53,cat:'pearl',icon:'pearl',name:'Серебряное колье-чокер из классического натурального жемчуга "Base"',price:4890,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг натуральный пресноводгный речной',new:true},
+{id:54,cat:'pearl',icon:'pearl',name:'Серебряное колье из крупного жемчуга Khaki',price:4890,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг натуральный пресноводгный речной',new:true},
+{id:55,cat:'pearl',icon:'pearl',name:'Серебряное колье из натурального барочного чёрного-синего жемчуга',price:5490,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Речной жемчуг',new:true},
+{id:56,cat:'pearl',icon:'pearl',name:'Серебряное колье из натурального крупного барочного речного серого жемчуга',price:6890,desc:'Жемчуг имеет органическое происхождение – его формируют в своих раковинах некоторые моллюски. Пресноводный жемчуг добывают в…',stone:'Жемчуг натуральный пресноводгный речной',new:true},
+{id:57,cat:'chuvashia',icon:'chuvashia',name:'Серебряный чокер из Красной Шпинели',price:3190,desc:'Для женщин Красная шпинель становится одним из оберегов семейного счастья . Камень способен усилить привлекательность женщины…',stone:'Красная шпинель',new:true},
+{id:58,cat:'chuvashia',icon:'chuvashia',name:'Серебряное национальное кольцо "Тухья"',price:3490,desc:'Кольцо куполообразной аутентичной формы, напоминающее древний чувашский женский головной убор. Украшено цепочками и "резной"…',stone:'',new:true},
+{id:59,cat:'chuvashia',icon:'chuvashia',name:'Серебряные серьги-конго из Красной шпинели',price:4590,desc:'Для женщин Красная шпинель становится одним из оберегов семейного счастья . Камень способен усилить привлекательность женщины…',stone:'Красная шпинель',new:true},
+{id:60,cat:'chuvashia',icon:'chuvashia',name:'Серебряные национальные подвесы "Гармония"',price:4890,desc:'Подвесы на серьги-основы (подбираются отдельно) Символ представляет собой два соединенных сердца и сохраняет схожесть с…',stone:'',new:true},
+{id:61,cat:'chuvashia',icon:'chuvashia',name:'Серебряный национальный медальон-оберег с гравировкой "Любовь"',price:5190,desc:'Серебряный медальон с лазерной гравировкой в форме напоминающей сердце, схожее с руническими письменами. Медальон имеет 2…',stone:'',new:true},
+{id:62,cat:'chuvashia',icon:'chuvashia',name:'Серебряные национальные серьги-пусеты "Гармония"',price:5890,desc:'Символ представляет собой два соединенных сердца и сохраняет схожесть с руническими письменами. Серьги выполнены на надежном…',stone:'',new:true},
+{id:63,cat:'chuvashia',icon:'chuvashia',name:'Серебряные национальные серьги-пусеты "Гармония"(на английском замке)',price:5990,desc:'Символ представляет собой два соединенных сердца и сохраняет схожесть с руническими письменами. Серьги выполнены на английском…',stone:'',new:true}
+];
+
+let state = { tab:'catalog', activeCat:null, showCats:true, cart:[], fav:[], current:null };
+
+function fmt(n){ return n.toLocaleString('ru-RU')+' ₽'; }
+
+function renderCatGrid(){
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = CATS.map(c=>`
+    <div class="cat-tile" onclick="selectCat('${c.id}')">
+      <div class="wm"><svg viewBox="0 0 24 24">${ICONS[c.id==='new'?'whale':c.id]}</svg></div>
+      <svg class="chev" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+      <span class="label">${c.name}</span>
+    </div>`).join('');
+}
+function showCategories(){
+  state.showCats = true;
+  document.getElementById('catalogHome').style.display = '';
+  document.getElementById('catalogList').style.display = 'none';
+  document.getElementById('backRow').style.display = 'none';
+}
+function selectCat(id){
+  state.activeCat = id; state.showCats = false; state.tab='catalog';
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`nav.bottom button[data-tab="catalog"]`).classList.add('active');
+  document.getElementById('catalogHome').style.display = 'none';
+  document.getElementById('catalogList').style.display = '';
+  document.getElementById('backRow').style.display = 'flex';
+  renderGrid();
+}
+function setTab(tab){
+  state.tab = tab;
+  document.querySelectorAll('nav.bottom button').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`nav.bottom button[data-tab="${tab}"]`).classList.add('active');
+  if(tab==='catalog'){ showCategories(); }
+  else{
+    document.getElementById('catalogHome').style.display = 'none';
+    document.getElementById('catalogList').style.display = '';
+    document.getElementById('backRow').style.display = 'none';
+    renderGrid();
+  }
+}
+function renderGrid(){
+  const title = document.getElementById('gridTitle');
+  let list;
+  if(state.tab==='fav'){
+    title.textContent = 'Избранное';
+    list = PRODUCTS.filter(p=>state.fav.includes(p.id));
+  } else if(state.activeCat==='new'){
+    title.textContent = 'Новинки';
+    list = PRODUCTS.filter(p=>p.new);
+  } else {
+    title.textContent = CATS.find(c=>c.id===state.activeCat)?.name || 'Каталог';
+    list = PRODUCTS.filter(p=>p.cat===state.activeCat);
+  }
+  document.getElementById('gridCount').textContent = list.length ? list.length+' изд.' : '';
+  const grid = document.getElementById('grid');
+  if(!list.length){
+    grid.innerHTML = `<div class="cart-empty" style="grid-column:1/3;">${state.tab==='fav'?'Пока пусто. Отмечайте украшения сердечком.':'В этой категории пока нет изделий.'}</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p=>`
+    <div class="card" onclick="openProduct(${p.id})">
+      <div class="thumb"><svg viewBox="0 0 24 24">${ICONS[p.icon]}</svg></div>
+      <div class="info">
+        <p class="name">${p.name}</p>
+        <div class="meta">
+          <span class="price">${fmt(p.price)}</span>
+          <button class="fav-btn ${state.fav.includes(p.id)?'on':''}" onclick="event.stopPropagation();toggleFav(${p.id})">
+            <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-8.8C.6 7.4 2.6 4 6.2 4c2 0 3.6 1.1 4.4 2.6C11.4 5.1 13 4 15 4c3.6 0 5.6 3.4 3.7 7.2C19 15.6 12 20 12 20z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function toggleFav(id){
+  const i = state.fav.indexOf(id);
+  if(i>-1) state.fav.splice(i,1); else state.fav.push(id);
+  renderGrid();
+  if(state.current && state.current.id===id) updateFavBtn();
+}
+function toggleFavCurrent(){ if(state.current) toggleFav(state.current.id); }
+function updateFavBtn(){
+  const on = state.fav.includes(state.current.id);
+  document.getElementById('pdFav').textContent = on ? 'В избранном ✓' : 'В избранное';
+}
+
+/* ---------- Sheets ---------- */
+function showSheet(id){
+  document.getElementById('overlay').classList.add('show');
+  document.getElementById(id).classList.add('show');
+}
+function closeAll(){
+  document.getElementById('overlay').classList.remove('show');
+  document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('show'));
+}
+function openProduct(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  state.current = p;
+  document.getElementById('pdHero').innerHTML = `<svg viewBox="0 0 24 24">${ICONS[p.icon]}</svg>`;
+  document.getElementById('pdName').textContent = p.name;
+  document.getElementById('pdPrice').textContent = fmt(p.price);
+  document.getElementById('pdDesc').textContent = p.desc;
+  const stoneRow = document.getElementById('pdStoneRow');
+  if(p.stone){ stoneRow.style.display='flex'; document.getElementById('pdStone').textContent = p.stone; }
+  else stoneRow.style.display='none';
+  updateFavBtn();
+  showSheet('sheetProduct');
+}
+function addToCartCurrent(){
+  if(!state.current) return;
+  state.cart.push(state.current.id);
+  updateCartBadge();
+  showToast('Добавлено в корзину');
+}
+function updateCartBadge(){
+  const b = document.getElementById('cartBadge');
+  if(state.cart.length){ b.style.display='flex'; b.textContent = state.cart.length; }
+  else b.style.display='none';
+}
+function openCart(){
+  const list = document.getElementById('cartList');
+  const summary = document.getElementById('cartSummary');
+  if(!state.cart.length){
+    list.innerHTML = `<div class="cart-empty">Корзина пуста. Загляните в каталог — там ждёт хвост кита.</div>`;
+    summary.innerHTML = '';
+  } else {
+    let total = 0;
+    list.innerHTML = state.cart.map((id,idx)=>{
+      const p = PRODUCTS.find(x=>x.id===id); total += p.price;
+      return `<div class="cart-row">
+        <div class="thumb"><svg viewBox="0 0 24 24">${ICONS[p.icon]}</svg></div>
+        <div class="cinfo"><p class="name">${p.name}</p><span class="price">${fmt(p.price)}</span></div>
+        <button class="remove" onclick="removeFromCart(${idx})">Убрать</button>
+      </div>`;
+    }).join('');
+    summary.innerHTML = `
+      <div class="cart-summary">
+        <div class="row"><span>Доставка</span><span>от 300 ₽ / бесплатно от 15 000 ₽</span></div>
+        <div class="total"><span>Итого</span><span>${fmt(total)}</span></div>
+      </div>
+      <div style="padding:0 20px 6px;"><button class="btn btn-primary" onclick="checkout()">Оформить заказ</button></div>`;
+  }
+  showSheet('sheetCart');
+}
+function removeFromCart(idx){ state.cart.splice(idx,1); updateCartBadge(); openCart(); }
+function checkout(){
+  closeAll();
+  const items = state.cart.map(id=>PRODUCTS.find(p=>p.id===id).name).join(', ');
+  const text = encodeURIComponent(`Здравствуйте! Хочу заказать: ${items}`);
+  document.getElementById('waLink').href = `https://t.me/serebroomru?text=${text}`;
+  setTimeout(()=>showSheet('sheetContact'), 260);
+}
+function openContact(){ showSheet('sheetContact'); }
+function openIndividual(){
+  document.getElementById('waLink').href = `https://t.me/serebroomru?text=${encodeURIComponent('Здравствуйте! Хочу обсудить индивидуальный заказ.')}`;
+  showSheet('sheetContact');
+}
+function openAbout(){ showSheet('sheetAbout'); }
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 1600);
+}
+
+renderCatGrid();
+showCategories();
+</script>
+</body>
+</html>
